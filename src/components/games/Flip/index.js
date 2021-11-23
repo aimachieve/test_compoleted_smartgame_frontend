@@ -26,7 +26,7 @@ import {
 } from '../../../utils/interact.js'
 
 import WinLoseModal from './WinLoseModal'
-import { config } from '../../../utils/config.js'
+// import { config } from '../../../utils/config.js'
 import { saveWinnerData } from '../../../actions/game'
 
 import win_effect from '../../../static/coinflip_win.wav'
@@ -93,7 +93,7 @@ const Flip = ({ isAuthenticated, login, saveWinnerData }) => {
 
   // Get nonce for sendSignedTransaction()
   const getNonce = async () => {
-    return await web3.eth.getTransactionCount(config.owner)
+    return await web3.eth.getTransactionCount(process.env.REACT_APP_OWNER)
   }
 
   // Save Current Data
@@ -206,7 +206,7 @@ const Flip = ({ isAuthenticated, login, saveWinnerData }) => {
     
     // parseFloat(ethers.utils.formatEther(betAmount) )  betAmount * 10 ** 10
     // 
-    contract.methods.Bet(config.owner, web3.utils.toWei(betAmount.toString(), 'ether')).send({
+    contract.methods.Bet(process.env.REACT_APP_OWNER, web3.utils.toWei(betAmount.toString(), 'ether')).send({
       from: walletAddress,
       value: web3.utils.toWei(betAmount.toString(), 'ether')
     })
@@ -227,13 +227,13 @@ const Flip = ({ isAuthenticated, login, saveWinnerData }) => {
           if (!mute) { Win.play() }
           console.log(betAmount * 2 * 0.98)
 
-          const privateKey = Buffer.from(config.owner_privatekey, 'hex')
+          const privateKey = Buffer.from(process.env.REACT_APP_OWNER_PRIVATEKEY, 'hex')
           const count = await getNonce()
           const rawTx = {
             nonce: web3.utils.toHex(count),
             gasPrice: web3.utils.toHex(100000000000),
             gasLimit: web3.utils.toHex(300000),
-            from: config.owner,
+            from: process.env.REACT_APP_OWNER,
             to: walletAddress,
             value: web3.utils.toHex(web3.utils.toWei((betAmount * 2 * 0.98).toString(), 'ether')),
           }

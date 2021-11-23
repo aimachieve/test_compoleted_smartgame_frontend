@@ -1,8 +1,8 @@
 import Web3 from 'web3';
-import { config } from './config.js'
+// import { config } from './config.js'
 
 const contractABI = require("./contract-abi.json");
-const contractAddress = config.contractAddress;
+const contractAddress = process.env.REACT_APP_CONTRACTADDRESS;
 
 // Handle changed or accounts changed
 window.ethereum.on('chainChanged', handleChainChanged);
